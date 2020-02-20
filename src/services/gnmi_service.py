@@ -52,7 +52,9 @@ yang2json_map = {
     "int64":"string",
     "uint64":"string",
     "decimal64":"string",
-    "instance-identifier":"string"
+    "instance-identifier":"string",
+    "list-of-strings": "list-of-strings",
+    "null-list": "null-list"
 }
 
 
@@ -95,6 +97,10 @@ def values_to_dict(dict_data=None, values=None, types=None):
                     set_value = False
             elif json_type == 'null':
                 set_value == None
+            elif json_type == 'list-of-strings':
+                set_value = list(str(value).split(' '))
+            elif json_type == 'null-list':
+                set_value = [None]
         else:
             # we have to assume type if none was provided
             # this will support only numbers and strings 
@@ -595,6 +601,3 @@ class NotificationStreamer(object):
 
     def tcp_send(self, msg=None):
         self.socket.send(self.output_format(msg))
-
-        
-
